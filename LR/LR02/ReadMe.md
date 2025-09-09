@@ -3,7 +3,7 @@
 |1|Санкт-Петербург|Новая Голландия|<https://yandex.ru/maps/-/CLQx74K3>|
 |2|Санкт-Петербург|Гостиница Четыре Сезона|<https://yandex.ru/maps/-/CLQx7HL2>|
 |3|Санкт-Петербург|Казанский собор|<https://yandex.ru/maps/-/CLQ3MLyl>|
-|4|Санкт-Петербург|Отель Санкт-Петербург|<	https://yandex.ru/maps/-/CLQ3a4Oc>|
+|4|Санкт-Петербург|Отель Санкт-Петербург|<https://yandex.ru/maps/-/CLQ3a4Oc>|
 |5|Санкт-Петербург|Набережная Фонтанки, 109|<https://yandex.ru/maps/-/CLQ3qVn0>|
 |6|Санкт-Петербург|Михайловский замок|<https://yandex.ru/maps/-/CLQ35D2x>|
 |7|Санкт-Петербург|Мраморный дворец|<https://yandex.ru/maps/-/CLQ3JHng>|
