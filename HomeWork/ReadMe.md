@@ -5,7 +5,7 @@
 |1.|Элементарная программа на С|<https://contest.yandex.ru/contest/51862/standings>||
 |2.|Управляющие конструкции|<https://contest.yandex.ru/contest/53132/standings>|Задачи "Считалочка" и "Длинные числа" не решаются без использования специализированных структур данных, можно пропустить|
 |3.|Массивы|https://contest.yandex.ru/contest/74518/problems/||
-|4.|||
+|4.|Матрица|https://contest.yandex.ru/contest/83865/problems/C/||
 |5.|||
 |6.|||
 |7.|||
