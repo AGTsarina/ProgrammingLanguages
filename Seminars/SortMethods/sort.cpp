@@ -1,5 +1,9 @@
 #include <vector>
+#include <string>
 #include <algorithm>
+#include <iostream>
+#include <random>
+#include <chrono>
 using namespace std;
 
 typedef void(*sort_method)(vector<int>&);
@@ -45,23 +49,105 @@ void sort_insert(vector<int> &v){
     }
 }
 
+void buildTree(vector<int> &v, int &L, int &R){
+    int i = L;
+    int left = 2 * i + 1, right = 2 * i + 2;
+    int max = v[left];
+    int imax = left;
+    if (right <= R && v[right] > max){
+         max = v[right];
+         imax = right;
+    }
+    while(i <= R && v[i] < max){
+        swap(v[i], v[imax]);
+        i = imax;
+        left = 2 * i + 1; right = 2 * i + 2;
+        if (left <=R){
+            max = v[left];
+            imax = left;
+            if (right <= R && v[right] > max){
+                max = v[right];
+                imax = right;
+            }
+        }
+        else break;
+    }
+}
+
+void heap_sort(vector<int> &v){
+    int L = v.size() / 2, R = v.size() - 1;
+    // построение бинарного дерева
+    while(L > 0){
+        L-- ;
+        buildTree(v, L, R);         
+    }
+    while(true){   // главный цикл сортировки
+        swap(v[L], v[R]);
+        R--;
+        if (R == 1) break;
+        buildTree(v, L, R);
+    }
+}
+
+
+
+
+bool check(const vector<int>& v){
+    for(int i=1; i<v.size(); i++){
+        if (v[i] < v[i-1]) return false;
+    }
+    return true;
+}
+vector<int> generate(int n, mt19937& engine, uniform_int_distribution<int> &distribution){
+    vector<int> res(n);
+    for(int i=0; i<n; i++){
+        res[i] = distribution(engine);
+    }
+    return res;
+}
+
+double sortTime(const vector<int>& v_init,
+                sort_method method, bool &correct){
+    vector<int> v(v_init);
+    const auto start{chrono::steady_clock::now()};
+    method(v);
+    const auto finish{chrono::steady_clock::now()};
+    const chrono::duration<double> elapsed_seconds{finish - start};
+    correct = check(v);
+    return elapsed_seconds.count();
+}
+
 
 int main(){
-    
+     vector<int> v({4,2,7,8,1,3,5,6});
+     heap_sort(v);
+     return 0;
+}
+
+/*int main(){
+    random_device random_device;
+    mt19937 engine(random_device());
+    uniform_int_distribution<int> distribution(0, 1000);
+    auto value = distribution(engine);
     vector<sort_method> methods({
         sotr_exchange,
         sotr_select,
         sort_insert
     });
-    sort_method method = sort_insert;
-    // sotr_exchange(v);
-    // sotr_select(v);
-    for(int i=0; i < 3; i++){
-        vector<int> v({5, 7, 2, 3, 1, 9, 8, 4, 6, 10});
-        methods[i](v);
-        check(v);
+    vector<string> names({"sotr_exchange",
+        "sotr_select",
+        "sort_insert"});
+    int size = 20000;
+    vector<int> v_init = generate(size, engine, distribution);
+    for(int i=0; i < methods.size(); i++){
+        bool correct;
+        double time = sortTime(v_init, methods[i], correct);
+        if (correct){
+            cout <<"Метод " << names[i];
+            cout <<" выполняет работу за " << time << " c.\n";
+        }
+        else cout << "Ошибка!\n";
     }
     
     return 0;
-}
-
+}*/
