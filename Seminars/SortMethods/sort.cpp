@@ -2,8 +2,10 @@
 #include <string>
 #include <algorithm>
 #include <iostream>
+#include <fstream>
 #include <random>
 #include <chrono>
+#include <iomanip>
 using namespace std;
 
 typedef void(*sort_method)(vector<int>&);
@@ -89,14 +91,44 @@ void heap_sort(vector<int> &v){
     }
 }
 
+void partition(vector<int> &v, int L, int R, int &l, int &r){
+    int length = (R - L);
+    int middle = (L + R) / 2; //L + length / 2;
+    int x = v[middle]; // !!! ВАЖНО! запомнить элемент
+    int i = L, j = R;
+    do{        
+        while(v[i] < x/*v[middle]*/) i++; // !!! Ошибка использовать v[middle], так он может изменить значение при обмене! 
+        while(v[j] > x/*v[middle]*/) j--; // !!! Ошибка использовать v[middle], так он может изменить значение при обмене! 
+        if (i <=j){
+            swap(v[i], v[j]);
+            i++; j--;
+        }
+    }while(i<=j);
+    l = j; r = i;
+}
 
-
-
-bool check(const vector<int>& v){
-    for(int i=1; i<v.size(); i++){
-        if (v[i] < v[i-1]) return false;
+void quick_sort(vector<int> &v, int L, int R){
+    int l, r;
+    partition(v, L, R, l, r);
+    if (L < l){
+        quick_sort(v, L, l);
     }
-    return true;
+    if (r < R){
+        quick_sort(v, r, R);
+    }
+}
+void quick_sort(vector<int> &v){
+    quick_sort(v, 0, v.size()-1);
+}
+
+
+
+
+int check(const vector<int>& v){
+    for(int i=1; i<v.size(); i++){
+        if (v[i] < v[i-1]) return i;
+    }
+    return -1;
 }
 vector<int> generate(int n, mt19937& engine, uniform_int_distribution<int> &distribution){
     vector<int> res(n);
@@ -104,6 +136,21 @@ vector<int> generate(int n, mt19937& engine, uniform_int_distribution<int> &dist
         res[i] = distribution(engine);
     }
     return res;
+}
+
+
+void check_sort(){
+    random_device random_device;
+    mt19937 engine(random_device());
+    uniform_int_distribution<int> distribution(0, 1000);
+    while(true){
+        vector<int> v_init = generate(10000, engine, distribution);
+        vector<int> v({1,2,1,2,1,2,3,3,3,1,2,1,3,2,1,2,3});
+        quick_sort(v_init);
+        int res= check(v_init);
+        if (res > 0) continue;
+    }
+
 }
 
 double sortTime(const vector<int>& v_init,
@@ -117,14 +164,12 @@ double sortTime(const vector<int>& v_init,
     return elapsed_seconds.count();
 }
 
-
-int main(){
-     vector<int> v({4,2,7,8,1,3,5,6});
-     heap_sort(v);
-     return 0;
+void f(vector<int> v){
+    int *data = v.data();
+    return;
 }
 
-/*int main(){
+void evaluate_sort(int size = 20000, ostream &out=cout){
     random_device random_device;
     mt19937 engine(random_device());
     uniform_int_distribution<int> distribution(0, 1000);
@@ -132,22 +177,47 @@ int main(){
     vector<sort_method> methods({
         sotr_exchange,
         sotr_select,
-        sort_insert
+        sort_insert,
+        heap_sort,
+        quick_sort
     });
-    vector<string> names({"sotr_exchange",
-        "sotr_select",
-        "sort_insert"});
-    int size = 20000;
+   
     vector<int> v_init = generate(size, engine, distribution);
     for(int i=0; i < methods.size(); i++){
         bool correct;
         double time = sortTime(v_init, methods[i], correct);
         if (correct){
-            cout <<"Метод " << names[i];
-            cout <<" выполняет работу за " << time << " c.\n";
+            // cout <<"Метод " << names[i];
+            //cout <<" выполняет работу за " << time << " c.\n";
+            out << time<<";";
         }
         else cout << "Ошибка!\n";
     }
+    out << endl;
     
-    return 0;
-}*/
+}
+
+int main(){
+    ofstream out("res.csv");
+    vector<string> names({"sotr_exchange",
+        "sotr_select",
+        "sort_insert","heap_sort", "quick_sort"});
+    out <<"N;";
+    for(auto& name: names){
+        out << name<<";";
+    }
+    out << endl;
+    for(int n = 1000; n<20000; n += 1000){
+        out << n<<";";
+        evaluate_sort(n, out);
+    } 
+    
+}
+
+/*
+Метод sotr_exchange выполняет работу за 0.690613 c.
+Метод sotr_select выполняет работу за 0.190464 c.
+Метод sort_insert выполняет работу за 0.242642 c.
+Метод heap_sort выполняет работу за 0.00328803 c.
+Метод quick_sort выполняет работу за 0.00181096 c.
+*/
