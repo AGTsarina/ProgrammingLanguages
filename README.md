@@ -2,10 +2,10 @@
 
 Материалы курса Программирование 1 семестр
 
-1. Семинары
+1. Семинары - содержит материалы семинарских занятий
 2. Лабораторные работы
-3. Контрольные работы
-4. Домашние задания
+3. [Контрольные работы](https://github.com/AGTsarina/ProgrammingLanguages/tree/main/ControlPoints)
+4. [Домашние задания](https://github.com/AGTsarina/ProgrammingLanguages/tree/main/HomeWork)
 
 ### Информационные ресурсы:
 1. [Руководство по языку программирования Си](https://metanit.com/c/tutorial/)
