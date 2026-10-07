@@ -10,3 +10,5 @@
 8. Структуры.
 
 [Ссылка на электронную доску](https://app.idroo.com/ru/boards/zC6zY3bm8k)
+
+[Ссылка на Google Colab](https://colab.research.google.com/drive/10mikp9W4uVh1CK4SqXL8-A8oLro6Vv76?usp=sharing)
